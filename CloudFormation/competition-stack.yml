@@ -189,6 +189,19 @@ Resources:
         Value: Competition Database
       #VPCSecurityGroups:
       #- !Ref DBSecurityGroup
+
+  #------------------------------------------EC2 Instance
+
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    DependsOn: EC2SecurityGroup
+    Properties:
+      InstanceType: t3.micro
+      ImageId: ami-04581fbf744a7d11f
+      Tags: 
+      - Key: Name
+        Value: !Sub ${AWS::StackName}-ec2
+
   
  
  
