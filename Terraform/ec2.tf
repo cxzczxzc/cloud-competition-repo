@@ -18,12 +18,12 @@ resource "local_file" "ssh_key" {
 # Security group for the EC2 instances
 resource "aws_security_group" "ec2_sg" {
   name_prefix = "example-ec2-sg-"
-
+  vpc_id      = aws_vpc.example_vpc.id
   ingress {
     from_port   = 5000
     to_port     = 5000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # Replace with your desired CIDR block
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -40,7 +40,8 @@ resource "aws_launch_template" "example_lt" {
   instance_type          = "t2.micro"
   key_name               = aws_key_pair.key_pair.key_name
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
-  user_data              = filebase64("user_data.sh")
+
+  user_data = filebase64("user_data.sh")
   iam_instance_profile {
     arn = aws_iam_instance_profile.example.arn
   }
@@ -49,7 +50,7 @@ resource "aws_launch_template" "example_lt" {
     create_before_destroy = true
   }
   tags = {
-    Name = "skills-ira"
+    Name = "skillsontario"
   }
 }
 

@@ -1,18 +1,6 @@
-data "aws_ssm_parameter" "db_username" {
-  name = "username"
-}
-
-data "aws_ssm_parameter" "db_password" {
-  name = "password" # Update with your SSM parameter name for the database password
-}
-
-data "aws_ssm_parameter" "db_name" {
-  name = "database" # Update with your SSM parameter name for the database name
-}
-
 resource "aws_db_subnet_group" "example" {
   name       = "example-subnet-group"
-  subnet_ids = var.subnet_ids
+  subnet_ids = aws_subnet.public_subnets.*.id
 }
 
 data "aws_db_snapshot" "example" {
@@ -21,6 +9,7 @@ data "aws_db_snapshot" "example" {
 
 resource "aws_security_group" "db_sg" {
   name_prefix = "example-db-sg-"
+  vpc_id      = aws_vpc.example_vpc.id
   ingress {
     from_port   = 3306
     to_port     = 3306
@@ -44,9 +33,9 @@ resource "aws_db_instance" "example" {
   publicly_accessible     = false
   db_subnet_group_name    = aws_db_subnet_group.example.name
   vpc_security_group_ids  = [aws_security_group.db_sg.id]
-  name                    = data.aws_ssm_parameter.db_name.value
-  username                = data.aws_ssm_parameter.db_username.value
-  password                = data.aws_ssm_parameter.db_password.value
+  name                    = local.parameters["database"]
+  username                = local.parameters["username"]
+  password                = local.parameters["password"]
   backup_retention_period = 7
   skip_final_snapshot     = true
   snapshot_identifier     = data.aws_db_snapshot.example.id
@@ -59,12 +48,5 @@ resource "aws_ssm_parameter" "db_endpoint" {
   name      = "host"
   type      = "String"
   value     = aws_db_instance.example.address
-  overwrite = var.param_overwrite
-}
-
-resource "aws_ssm_parameter" "port" {
-  name      = "port"
-  type      = "String"
-  value     = "3306"
-  overwrite = var.param_overwrite
+  overwrite = true
 }

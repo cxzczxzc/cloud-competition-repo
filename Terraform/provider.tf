@@ -9,5 +9,5 @@ terraform {
 
 provider "aws" {
   region  = "us-east-1"
-  profile = "skillsont"
+  profile = "skillsont" # The profile should exists locally
 }
