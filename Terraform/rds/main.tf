@@ -1,15 +1,15 @@
-resource "aws_db_subnet_group" "example" {
-  name       = "example-subnet-group"
+resource "aws_db_subnet_group" "this" {
+  name       = "this-subnet-group"
   subnet_ids = aws_subnet.public_subnets.*.id
 }
 
-data "aws_db_snapshot" "example" {
+data "aws_db_snapshot" "this" {
   db_snapshot_identifier = var.snapshot_arn
 }
 
-resource "aws_security_group" "db_sg" {
-  name_prefix = "example-db-sg-"
-  vpc_id      = aws_vpc.example_vpc.id
+resource "aws_security_group" "this_db_sg" {
+  name_prefix = "this-db-sg-"
+  vpc_id      = var.vpc_id
   ingress {
     from_port   = 3306
     to_port     = 3306
@@ -18,35 +18,35 @@ resource "aws_security_group" "db_sg" {
   }
 }
 
-resource "aws_db_parameter_group" "example" {
-  name   = "example-db-param-group"
+resource "aws_db_parameter_group" "this" {
+  name   = "this-db-param-group"
   family = "mysql8.0"
 }
 
-resource "aws_db_instance" "example" {
-  identifier              = "example-db-instance"
+resource "aws_db_instance" "this_rds" {
+  identifier              = "this-db-instance"
   engine                  = "mysql"
   engine_version          = "8.0.32"
   instance_class          = "db.t3.small"
   allocated_storage       = 20
   storage_type            = "gp2"
   publicly_accessible     = false
-  db_subnet_group_name    = aws_db_subnet_group.example.name
-  vpc_security_group_ids  = [aws_security_group.db_sg.id]
+  db_subnet_group_name    = aws_db_subnet_group.this.name
+  vpc_security_group_ids  = [aws_security_group.this_db_sg.id]
   name                    = local.parameters["database"]
   username                = local.parameters["username"]
   password                = local.parameters["password"]
   backup_retention_period = 7
   skip_final_snapshot     = true
-  snapshot_identifier     = data.aws_db_snapshot.example.id
+  snapshot_identifier     = data.aws_db_snapshot.this.id
   tags = {
-    Name = "example-db-instance"
+    Name = "this-db-instance"
   }
 }
 
 resource "aws_ssm_parameter" "db_endpoint" {
   name      = "host"
   type      = "String"
-  value     = aws_db_instance.example.address
+  value     = aws_db_instance.this_rds.address
   overwrite = true
 }

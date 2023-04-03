@@ -17,8 +17,8 @@ resource "local_file" "ssh_key" {
 
 # Security group for the EC2 instances
 resource "aws_security_group" "ec2_sg" {
-  name_prefix = "example-ec2-sg-"
-  vpc_id      = aws_vpc.example_vpc.id
+  name_prefix = "this-ec2-sg-"
+  vpc_id      = var.vpc_id
   ingress {
     from_port   = 5000
     to_port     = 5000
@@ -34,8 +34,8 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
-resource "aws_launch_template" "example_lt" {
-  name_prefix            = "example-lt-"
+resource "aws_launch_template" "this_lt" {
+  name_prefix            = "this-lt-"
   image_id               = var.app_ami_id
   instance_type          = "t2.micro"
   key_name               = aws_key_pair.key_pair.key_name
@@ -43,7 +43,7 @@ resource "aws_launch_template" "example_lt" {
 
   user_data = filebase64("user_data.sh")
   iam_instance_profile {
-    arn = aws_iam_instance_profile.example.arn
+    arn = aws_iam_instance_profile.this.arn
   }
 
   lifecycle {
@@ -55,8 +55,8 @@ resource "aws_launch_template" "example_lt" {
 }
 
 # Define the IAM role
-resource "aws_iam_role" "example" {
-  name = "example-role"
+resource "aws_iam_role" "this" {
+  name = "this-role"
 
   # Attach an administrative policy to the role
   assume_role_policy = jsonencode({
@@ -79,9 +79,9 @@ resource "aws_iam_role" "example" {
 }
 
 # Define the IAM instance profile
-resource "aws_iam_instance_profile" "example" {
-  name = "example-instance-profile"
+resource "aws_iam_instance_profile" "this" {
+  name = "this-instance-profile"
 
   # Associate the IAM role with the instance profile
-  role = aws_iam_role.example.name
+  role = aws_iam_role.this.name
 }

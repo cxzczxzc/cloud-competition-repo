@@ -1,14 +1,14 @@
 
 # Create a new VPC
-resource "aws_vpc" "example_vpc" {
-  cidr_block = var.vpc_cidr_block
+resource "aws_vpc" "this_vpc" {
+  cidr_block = var.vpc_cidr
 }
 
 # Create private subnets using a loop
 resource "aws_subnet" "private_subnets" {
   count = length(var.private_subnet_cidr_blocks)
 
-  vpc_id            = aws_vpc.example_vpc.id
+  vpc_id            = aws_vpc.this_vpc.id
   cidr_block        = var.private_subnet_cidr_blocks[count.index]
   availability_zone = element(var.availability_zones, count.index)
 
@@ -21,7 +21,7 @@ resource "aws_subnet" "private_subnets" {
 resource "aws_subnet" "public_subnets" {
   count = length(var.public_subnet_cidr_blocks)
 
-  vpc_id                  = aws_vpc.example_vpc.id
+  vpc_id                  = aws_vpc.this_vpc.id
   cidr_block              = var.public_subnet_cidr_blocks[count.index]
   availability_zone       = element(var.availability_zones, count.index)
   map_public_ip_on_launch = true
@@ -32,21 +32,21 @@ resource "aws_subnet" "public_subnets" {
 }
 
 # Create an internet gateway and attach it to the VPC
-resource "aws_internet_gateway" "example_igw" {
-  vpc_id = aws_vpc.example_vpc.id
+resource "aws_internet_gateway" "this_igw" {
+  vpc_id = aws_vpc.this_vpc.id
 }
 
 # Create route tables for private and public subnets
 resource "aws_route_table" "private_route_table" {
-  vpc_id = aws_vpc.example_vpc.id
+  vpc_id = aws_vpc.this_vpc.id
 }
 
 resource "aws_route_table" "public_route_table" {
-  vpc_id = aws_vpc.example_vpc.id
+  vpc_id = aws_vpc.this_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.example_igw.id
+    gateway_id = aws_internet_gateway.this_igw.id
   }
 }
 
@@ -66,12 +66,12 @@ resource "aws_route_table_association" "public_associations" {
 }
 
 # Create a NAT gateway in one of the public subnets
-resource "aws_eip" "example_eip" {
+resource "aws_eip" "this_eip" {
   vpc = true
 }
 
-resource "aws_nat_gateway" "example_nat_gateway" {
-  allocation_id = aws_eip.example_eip.id
+resource "aws_nat_gateway" "this_nat_gateway" {
+  allocation_id = aws_eip.this_eip.id
   subnet_id     = aws_subnet.public_subnets[0].id
 }
 
