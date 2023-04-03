@@ -48,6 +48,9 @@ resource "aws_launch_template" "example_lt" {
   lifecycle {
     create_before_destroy = true
   }
+  tags = {
+    Name = "skills-ira"
+  }
 }
 
 # Define the IAM role
