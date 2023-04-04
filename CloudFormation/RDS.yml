@@ -1,0 +1,72 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupName: this-subnet-group
+      SubnetIds: !Ref PublicSubnets
+
+  RDS:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: this-db-instance
+      Engine: mysql
+      EngineVersion: 8.0.32
+      AllocatedStorage: 20
+      StorageType: gp2
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      VPCSecurityGroups: !Ref DBSecurityGroup
+      DatabaseName: !Ref Parameters["database"]
+      MasterUsername: !Ref Parameters["username"]
+      MasterUserPassword: !Ref Parameters["password"]
+      BackupRetentionPeriod: 7
+      SkipFinalSnapshot: true
+      SnapshotIdentifier: !Ref DBSnapshot
+      Tags:
+        - Key: Name
+          Value: this-db-instance
+
+  DBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for the RDS instance
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+
+  DBParameterGroup:
+    Type: AWS::RDS::DBParameterGroup
+    Properties:
+      DBParameterGroupName: this-db-param-group
+      Family: mysql8.0
+
+  DBSSMParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: host
+      Type: String
+      Value: !GetAtt RDS.Endpoint.Address
+      Overwrite: true
+
+Outputs:
+
+  RDS:
+    Value: !Ref RDS
+
+  DBSecurityGroup:
+    Value: !Ref DBSecurityGroup
+
+  DBParameterGroup:
+    Value: !Ref DBParameterGroup
+
+  DBSSMParameter:
+    Value: !Ref DBSSMParameter

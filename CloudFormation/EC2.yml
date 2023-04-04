@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  Keypair:
+    Type: AWS::EC2::KeyPair::KeyName
+    Properties:
+      KeyName: "ontario-key-pair"
+  SecurityGroup: 
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupDescription: "This EC2 security group"
+      VpcId: !Ref VpcID
+      SecurityGroupIngress: 
+        - CidrIp: 0.0.0.0/0
+          FromPort: 5000
+          IpProtocol: tcp
+          ToPort: 5000
+      SecurityGroupEgress: 
+        - CidrIp: 0.0.0.0/0
+          FromPort: 0
+          IpProtocol: tcp
+          ToPort: 65535
+    
+  LaunchTemplate: 
+    Type: AWS::EC2::LaunchTemplate
+    Properties: 
+      LaunchTemplateName: "this-launch-template"
+      ImageId: !Ref AppAmiId
+      InstanceType: t2.micro
+      KeyName: !Ref Keypair
+      SecurityGroups: 
+        - !Ref SecurityGroup
+      IamInstanceProfile: !Ref IamInstanceProfile
+      UserData: !Base64
+        '#!/bin/bash
+        echo "Starting application"
+
+        python3 /home/ec2-user/app.py'
+  IamRole: 
+    Type: AWS::IAM::Role
+    Properties: 
+      RoleName: "this-role"
+      AssumeRolePolicyDocument: 
+        Version: 2012-10-17
+        Statement: 
+          - Effect: Allow
+            Principal: 
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns: 
+        - arn:aws:iam::aws:policy/AdministratorAccess
+  IamInstanceProfile: 
+    Type: AWS::IAM::InstanceProfile
+    Properties: 
+      Roles: 
+        - !Ref IamRole
+
+Outputs:
+  KeypairName: 
+    Value: !Ref Keypair
+  SecurityGroupId: 
+    Value: !Ref SecurityGroup
+  LaunchTemplateId: 
+    Value: !Ref LaunchTemplate
