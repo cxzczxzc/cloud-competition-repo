@@ -41,7 +41,7 @@ resource "aws_launch_template" "this_lt" {
   key_name               = aws_key_pair.key_pair.key_name
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 
-  user_data = filebase64("user_data.sh")
+  user_data = filebase64("./ec2/user_data.sh")
   iam_instance_profile {
     arn = aws_iam_instance_profile.this.arn
   }

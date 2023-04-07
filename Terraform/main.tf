@@ -20,8 +20,10 @@ module "vpc" {
 module "rds" {
   source = "./rds"
 
-  snapshot_arn = "arn:aws:rds:us-east-1:156463586173:snapshot:skillsdb-snapshot"
-  vpc_id       = module.vpc.vpc_id
+  snapshot_arn   = "arn:aws:rds:us-east-1:156463586173:snapshot:skillsdb-snapshot"
+  public_subnets = module.vpc.public_subnets
+  vpc_id         = module.vpc.vpc_id
+  db_paramters   = module.parameters.db_parameters
 }
 
 module "ec2" {

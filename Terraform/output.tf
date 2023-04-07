@@ -1,3 +1,3 @@
 output "alb_dns_name" {
-  value = aws_lb.example_lb.dns_name
+  value = module.alb.alb_dns
 }

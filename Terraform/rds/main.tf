@@ -1,6 +1,6 @@
 resource "aws_db_subnet_group" "this" {
   name       = "this-subnet-group"
-  subnet_ids = aws_subnet.public_subnets.*.id
+  subnet_ids = var.public_subnets
 }
 
 data "aws_db_snapshot" "this" {
@@ -33,9 +33,9 @@ resource "aws_db_instance" "this_rds" {
   publicly_accessible     = false
   db_subnet_group_name    = aws_db_subnet_group.this.name
   vpc_security_group_ids  = [aws_security_group.this_db_sg.id]
-  name                    = local.parameters["database"]
-  username                = local.parameters["username"]
-  password                = local.parameters["password"]
+  name                    = var.db_paramters["database"]
+  username                = var.db_paramters["username"]
+  password                = var.db_paramters["password"]
   backup_retention_period = 7
   skip_final_snapshot     = true
   snapshot_identifier     = data.aws_db_snapshot.this.id

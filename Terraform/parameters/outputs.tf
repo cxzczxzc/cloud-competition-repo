@@ -1,4 +1,5 @@
-output "aws_ssm_parameter" {
-  value = aws_ssm_parameter.this_parameter
+output "db_parameters" {
+  description = "DB configuration parameters"
+  value       = local.parameters
 
 }
