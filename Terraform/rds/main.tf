@@ -33,7 +33,7 @@ resource "aws_db_instance" "this_rds" {
   publicly_accessible     = false
   db_subnet_group_name    = aws_db_subnet_group.this.name
   vpc_security_group_ids  = [aws_security_group.this_db_sg.id]
-  name                    = var.db_paramters["database"]
+  db_name                 = var.db_paramters["database"]
   username                = var.db_paramters["username"]
   password                = var.db_paramters["password"]
   backup_retention_period = 7
