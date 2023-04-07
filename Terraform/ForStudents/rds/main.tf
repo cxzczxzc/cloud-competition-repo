@@ -36,7 +36,7 @@ resource "aws_db_instance" "this_rds" {
   db_name                 = var.db_paramters["database"]
   username                = var.db_paramters["username"]
   password                = var.db_paramters["password"]
-  backup_retention_period = 7
+  backup_retention_period = 0
   skip_final_snapshot     = true
   snapshot_identifier     = data.aws_db_snapshot.this.id
   tags = {

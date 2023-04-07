@@ -1,3 +1,9 @@
+data "aws_region" "current" {}
+
+data "aws_caller_identity" "current" {}
+locals {
+  account_id = data.aws_caller_identity.current.account_id
+}
 
 # Generates a secure private key and encodes it as PEM
 resource "tls_private_key" "key_pair" {
@@ -34,34 +40,55 @@ resource "aws_launch_template" "this_lt" {
   }
 }
 
-# Define the IAM role
-resource "aws_iam_role" "this" {
-  name = "this-role"
+# Define IAM policy document
+data "aws_iam_policy_document" "this_policy_document" {
+  statement {
+    sid    = "SSMParameterReadWriteAccess"
+    effect = "Allow"
+    actions = [
+      "ssm:GetParameter",
+      "ssm:GetParameters",
+      "ssm:GetParametersByPath",
+      "ssm:PutParameter",
+    ]
+    resources = ["arn:aws:ssm:${data.aws_region.current.name}:${local.account_id}:parameter/*"]
+  }
+}
 
-  # Attach an administrative policy to the role
+# Create IAM policy
+resource "aws_iam_policy" "this_policy" {
+  name   = "ssm-parameter-policy"
+  policy = data.aws_iam_policy_document.this_policy_document.json
+}
+
+# Create IAM role
+resource "aws_iam_role" "this_role" {
+  name = "ec2-ssm-parameter-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Action = "sts:AssumeRole"
         Effect = "Allow"
         Principal = {
           Service = "ec2.amazonaws.com"
         }
+        Action = "sts:AssumeRole"
       }
     ]
   })
-
-  # Attach the AdministratorAccess policy to the role
-  # This policy grants full administrative access to all AWS services
-  # You can also attach more specific policies as needed
-  managed_policy_arns = ["arn:aws:iam::aws:policy/AdministratorAccess"]
 }
+
+# Attach IAM policy to IAM role
+resource "aws_iam_role_policy_attachment" "this_policy_attachment" {
+  policy_arn = aws_iam_policy.this_policy.arn
+  role       = aws_iam_role.this_role.name
+}
+
 
 # Define the IAM instance profile
 resource "aws_iam_instance_profile" "this" {
   name = "this-instance-profile"
 
   # Associate the IAM role with the instance profile
-  role = aws_iam_role.this.name
+  role = aws_iam_role.this_role.name
 }

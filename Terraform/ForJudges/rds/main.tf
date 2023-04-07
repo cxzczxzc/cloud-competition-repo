@@ -34,5 +34,10 @@ resource "aws_db_instance" "this_rds" {
   }
 }
 
-
+resource "aws_ssm_parameter" "db_endpoint" {
+  name      = "host"
+  type      = "String"
+  value     = aws_db_instance.this_rds.address
+  overwrite = true
+}
 

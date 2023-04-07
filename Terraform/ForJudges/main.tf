@@ -29,13 +29,8 @@ module "rds" {
   snapshot_arn    = "arn:aws:rds:us-east-1:156463586173:snapshot:skillsdb-snapshot"
   private_subnets = module.vpc.private_subnets
   vpc_id          = module.vpc.vpc_id
-  db_parameters = {
-    username = "user"
-    password = ""
-    database = "skillsontario"
-    port     = "3306"
-  }
-  db_sg_id = module.sg.sg_ids["db_sg_id"]
+  db_parameters   = module.parameters.db_parameters
+  db_sg_id        = module.sg.sg_ids["db_sg_id"]
 }
 
 module "ec2" {
@@ -55,7 +50,6 @@ module "parameters" {
     database = "skillsontario"
     port     = "3306"
   }
-  db_address = module.rds.rds.address
 }
 
 module "alb" {

@@ -7,7 +7,7 @@ resource "random_password" "this_password" {
 
 locals {
   parameters = merge(var.parameters,
-    { host = var.db_address, password = aws_ssm_parameter.password.value }
+    { password = aws_ssm_parameter.password.value }
   )
 }
 
