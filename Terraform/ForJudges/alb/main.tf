@@ -12,11 +12,11 @@ resource "aws_lb_target_group" "this_tg" {
 
 resource "aws_autoscaling_group" "this_asg" {
   name_prefix               = "this-asg-"
-  max_size                  = 2
+  max_size                  = 4
   min_size                  = 2
   desired_capacity          = 2
   health_check_grace_period = 300
-  health_check_type         = "EC2"
+  health_check_type         = "ELB"
   launch_template {
     id      = var.aws_launch_template
     version = "$Latest"
@@ -24,6 +24,20 @@ resource "aws_autoscaling_group" "this_asg" {
   target_group_arns = [aws_lb_target_group.this_tg.arn]
   # This needs to be fixed
   vpc_zone_identifier = var.private_subnets[*]
+}
+
+# Autoscaling policy targeting 50% utilization
+resource "aws_autoscaling_policy" "this_scaling_policy" {
+  name                   = "example-policy"
+  policy_type            = "TargetTrackingScaling"
+  autoscaling_group_name = aws_autoscaling_group.this_asg.name
+
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+    target_value = 50.0
+  }
 }
 
 # Application Load Balancer (ALB)

@@ -22,7 +22,7 @@ resource "aws_ssm_parameter" "this_parameter" {
 
 # Create DB password as encrypted parameter
 resource "aws_ssm_parameter" "password" {
-  type      = "SecureString"
+  type      = "String" # not encrypted to comply with the application code
   name      = "password"
   value     = random_password.this_password.result
   overwrite = true

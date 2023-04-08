@@ -3,7 +3,7 @@
 # Description
 
 Infrastructure as code solution using Terraform for 2-Tiered web application.
-The deployment uses public AMI with the application code and dependencies already available.
+The deployment uses public AMI with the application code and dependencies already installed.
 Database scheme of MySQL database is inhereted from the public snapshot of the DB.
 Application is connecting to the DB hosted on Amazon RDS by using parameters retrieved from the Amazon Parameter Store.
 The ForStudents implementation is intentionally flawed.
@@ -26,8 +26,14 @@ The ForJudges implementation should _not_ be shared with the students.
 
 ### Pre-requisites
 
-- Valid credential for AWS account (not AWS academy account)
-You can use the command below to allow terraform access to Amazon APIs  
+- Valid credential for any AWS account (not AWS academy account)
+You can use the command below to allow terraform access to Amazon APIs
+If you use any AWS credentials profile name apart from "skillsont" configured in the provider.tf,
+make sure to update the [provider.tf](https://github.com/cxzczxzc/cloud-competition-repo/blob/bfbed815a10d035c23563d6b1a74fdc430c1576f/Terraform/ForJudges/provider.tf#L12) accordingly. There is no need to specify profile in provider.tf if you are using the default profile.
+
+### Prerequisites
+
+## AWS Credentials configuration
 
 ```
 aws configure
@@ -38,9 +44,13 @@ aws configure
 
 ### Deployment of  2-Tiered web application with Terraform
 
+Run the commands below to complete full deployment of the hosting solution and the application.
+The resultsing URL of ALB should be serving out test application.
+
 ```
-cd Terraform
 terraform init
 terraform plan
 terraform apply 
 ```
+
+Please not that the deployment might take up to 15 minutes, be patient.
