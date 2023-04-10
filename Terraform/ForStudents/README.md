@@ -36,3 +36,16 @@ terraform init
 terraform plan
 terraform apply 
 ```
+
+If the 'terraform apply' was successful then you should the ALB as the output
+```
+Apply complete! Resources: 36 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+alb_dns_name = "this-lb-########.us-east-1.elb.amazonaws.com"
+
+```
+
+Point your browser to your ALB and confirm you can load the flask app
+![flaskApp](.images/alb-flaskApp.png)
