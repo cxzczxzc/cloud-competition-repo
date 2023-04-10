@@ -9,11 +9,20 @@ Application is connecting to the DB hosted on Amazon RDS by using parameters ret
 
 ### Pre-requisites
 
-- Valid credential for AWS account (not AWS academy account)
+- [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+- A valid [AWS Access Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey)
+
+
 You can use the command below to allow terraform access to Amazon APIs  
 
 ```
-aws configure
+aws configure --profile skillsont
+
+AWS Access Key ID [None]: ********************
+AWS Secret Access Key [None]: ********************
+Default region name []: 
+Default output format [None]: 
+
 ```
 
 - Terraform version 0.14.x
