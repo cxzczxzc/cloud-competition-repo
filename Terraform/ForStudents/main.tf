@@ -30,7 +30,7 @@ module "ec2" {
   source = "./ec2"
 
   vpc_id     = module.vpc.vpc_id
-  app_ami_id = "ami-0e8a20c6da2c1ffbe"
+  app_ami_id = "ami-06ee50f8c9e84937f"
 }
 
 module "parameters" {
