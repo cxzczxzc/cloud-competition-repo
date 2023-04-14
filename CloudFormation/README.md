@@ -1,6 +1,7 @@
 # Description
 
-The cloucformation template creates resources in your AWS account
+The cloudformation template creates resources in your AWS account. competition-stack-students.yml is misconfigured for the competition.
+Flask application functionality will work irrespective of the template launched.
 
 ## Assumptions
 - You have an access to AWS account
@@ -10,7 +11,7 @@ The cloucformation template creates resources in your AWS account
 ## Usage
 - From command line using AWS CLI: 
     ```
-    aws cloudformation create-stack --stack-name competition-stack --template-body file:///Users/hdossani/git/aws-cf-essentials/templates/competition-stack.yml --region us-east-1
+    aws cloudformation create-stack --stack-name competition-stack --template-body file:///<your path>/git/aws-cf-essentials/templates/competition-stack.yml --region us-east-1
     ```
 - From AWS Console: Import template from the CloudFormation service page to create the new stack. You only need to provide stack name, all other values are default values.
 
@@ -37,17 +38,27 @@ The cloucformation template creates resources in your AWS account
     - name : (stack-name)-PublicRouteTable
     - route to : Internet Gateway
 - Private Route Table
-    - name : (stack-name)--PrivateRouteTable
+    - name : (stack-name)-PrivateRouteTable
     - route to : NAT Gateway
 - NAT Gateway
     - name : (stack-name)-NAT
 ### RDS  
-- name : (stack-name)-RDS
+- name : (stack-name)-rds
 - type : MYSQL
-- UserName : dbuser
-- Password : nopassword
+
 ### Ec2 Instance
 - name :  (stack-name)-ec2
 - type : Amazon Liunx 2
 
+### SSM Params
+- database : database name
+- user : database user name
+- password : database user password
+- host : database host
+- port : database port
 
+### ALB
+- name : (stack-name)-alb
+
+## Invoking Application
+- The cloudformation template outputs host URL of the application. Click on the host URL to launch application
