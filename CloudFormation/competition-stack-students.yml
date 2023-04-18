@@ -121,8 +121,7 @@ Resources:
     Properties:
       RouteTableId: !Ref PrivateRouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      # Route traffic through the NAT Gateway:
-      NatGatewayId: !Ref NATGateway
+      GatewayId: !Ref InternetGateway
   
   # Attach the public subnets to public route tables, 
   # and attach the private subnets to private route tables:    
@@ -222,24 +221,6 @@ Resources:
       KeyName: !Sub ${AWS::StackName}-ec2-keypair
 
   
-
-  #EC2 Role Policy
-  SSMParameterAccessPolicy:
-    Type: AWS::IAM::ManagedPolicy
-    Properties:
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          -
-            Sid: SSMParameterReadWriteAccess
-            Effect: Allow
-            Action:
-              - ssm:GetParameter
-              - ssm:GetParameters
-              - ssm:GetParametersByPath
-              - ssm:PutParameter
-            
-            Resource: !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/*
   
   #EC2 Role
   EC2InstanceRole:
@@ -256,7 +237,7 @@ Resources:
             Action:
               - sts:AssumeRole
       ManagedPolicyArns:
-        - !Ref SSMParameterAccessPolicy
+        - arn:aws:iam::aws:policy/AdministratorAccess
   
   #EC2 Instance Profile 
   EC2InstanceProfile:
