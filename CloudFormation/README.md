@@ -7,13 +7,14 @@ Flask application functionality will work irrespective of the template launched.
 - You have an access to AWS account
 - AWS region is us-east-1 (US East N.Virginia)
 - Latest version of AWS CLI is installed on your machine (not needed if you are using AWS console)
+- You have configured AWS CLI for accessing your AWS account
 
 ## Usage
 - From command line using AWS CLI: 
     ```
     aws cloudformation create-stack --stack-name competition-stack --template-body file:///<your path>/git/aws-cf-essentials/templates/competition-stack.yml --region us-east-1 --capabilities CAPABILITY_NAMED_IAM
     ```
-- From AWS Console: Import template from the CloudFormation service page to create the new stack. You need to create new stack and choose “With new resources(standard)”.  You only need to provide stack name, all other values are default values.
+- From AWS Console: Import template from the CloudFormation service page to create the new stack. You need to create new stack and choose “With new resources(standard)”.  You only need to provide stack name, all other values are default values. At the end, before clicking on Submit button, accept the acknowledgement that AWS CloudFormation might create IAM resources with custom names.
 
 ## Resources
 ### Network Resources
