@@ -116,12 +116,6 @@ Resources:
       - Key: Name
         Value: !Sub ${AWS::StackName}-PrivateRouteTable
   
-  PrivateRoute:           
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId: !Ref PrivateRouteTable
-      DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref InternetGateway
   
   # Attach the public subnets to public route tables, 
   # and attach the private subnets to private route tables:    
@@ -142,14 +136,12 @@ Resources:
   
   PrivateSubnetARouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
-    DependsOn: PrivateRoute
     Properties:
       SubnetId: !Ref PrivateSubnetA
       RouteTableId: !Ref PrivateRouteTable
   
   PrivateSubnetBRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
-    DependsOn: PrivateRoute
     Properties:
       SubnetId: !Ref PrivateSubnetB
       RouteTableId: !Ref PrivateRouteTable
