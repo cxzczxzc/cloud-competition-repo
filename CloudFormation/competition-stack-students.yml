@@ -366,6 +366,7 @@ Resources:
   #RDS Port
   DatabasePort:
     Type: AWS::SSM::Parameter
+    DependsOn: MasterDB
     Properties:
       Name: port
       Description: Aurora MySQL RDS Server Port
@@ -375,6 +376,7 @@ Resources:
   #RDS Host
   DatabaseHost:
     Type: AWS::SSM::Parameter
+    DependsOn: MasterDB
     Properties:
       Name: host
       Description: Aurora MySQL RDS Server Url
