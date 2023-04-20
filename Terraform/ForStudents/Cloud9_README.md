@@ -14,7 +14,7 @@
 <img style="float: center;" src='.\images\image6.jpg' width='500'>
 </p>
 
-* **Note**: You must choose **use-east-1** **N.Virginia** at the top right of the Create environment page
+* **Note**: You must choose **us-east-1** **N.Virginia** at the top right of the Create environment page
 
 
 5. Type in Name, Description, and choose Enviroment type ( Choose **New EC2 instance**)
@@ -45,7 +45,6 @@
     $ export AWS_SECRET_ACCESS_KEY=##ExampleAccessKey##
     $ export AWS_DEFAULT_REGION=us-east-1
     $ export AWS_SESSION_TOKEN=##Example_SESSION_TOKEN##
-
 13. Open **provider.tf** and set up provider to use enviroment variables
     ```
     provider "aws" {
@@ -53,7 +52,7 @@
     ```
     **Note**: Remove any line of code in provider.tf curly brackets   
 
-14. Type following commands to init, plan, and apply
+14. At terminal, type following commands to init, plan, and apply
     ```
     terraform init
     terraform plan
