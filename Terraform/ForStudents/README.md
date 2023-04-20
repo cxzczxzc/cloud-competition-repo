@@ -12,8 +12,11 @@ Application is connecting to the DB hosted on Amazon RDS by using parameters ret
 ### Download Terraform
 - https://developer.hashicorp.com/terraform/downloads?product_intent=terraform
 ### Recommended IDE
-- Cloud9 IDE 
-- Download: https://aws.amazon.com/cloud9/
+- Cloud9 IDE
+
+    - Include AWS CLI and Terraform
+    - Set up see [Cloud9_README.md](./Cloud9_README.md)
+   
 ### How to set environment variables
 - Linux or macOS
     ```
@@ -51,6 +54,13 @@ You can use the command below to allow terraform access to Amazon APIs
     AWS Secret Access Key [None]:##ExampleAccessKey##
     Default region name [None]: us-ease-1
     Default output format [None]: json
+
+- Or using the environment variable by modifying **provider.tf**
+    ```
+    provider "aws" {
+    }
+    ```    
+    Note: remove any line of code in **provider.tf** curly brackets
 
 ### Deployment of  2-Tiered web application with Terraform
 
