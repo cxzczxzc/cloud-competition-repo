@@ -5,13 +5,13 @@
 3. At the console home, search for **Cloud9**, and choose **Cloud9** 
 <br/>
 <p align="center"> 
-<img style="float: center;" src='.\images\image5.jpg' width='500'>
+<img style="float: center;" src='.\images\image5.jpg' width='600'>
 </p>
 
 4. In the next page, Click **Create environment** at the top right
 <br />
 <p align="center"> 
-<img style="float: center;" src='.\images\image6.jpg' width='500'>
+<img style="float: center;" src='.\images\image6.jpg' width='600'>
 </p>
 
 * **Note**: You must choose **us-east-1** **N.Virginia** at the top right of the Create environment page
@@ -22,7 +22,7 @@
     **Note**: You can also use Existing Compute option. We use New EC2 as an example.
 <br>
 <p align="center">
-<img style="float: center;" src='.\images\image7.jpg' width='500'>
+<img style="float: center;" src='.\images\image7.jpg' width='600'>
 </p>
 
 6. Leave everything at default values
@@ -30,7 +30,7 @@
 8. On the next page, Open **Cloud9 IDE** 
 <br>
 <p align="center"> 
-<img style="float: center;" src='.\images\image8.jpg' width='500'>
+<img style="float: center;" src='.\images\image8.jpg' width='600'>
 </p>
 
 9. On the next page, Click **File Menu** and click **Upload local Files**
