@@ -7,6 +7,7 @@ The deployment uses public AMI with the application code and dependencies alread
 Database scheme of MySQL database is inhereted from the public snapshot of the DB.
 Application is connecting to the DB hosted on Amazon RDS by using parameters retrieved from the Amazon Parameter Store.
 
+<<<<<<< HEAD
 ### Download and Install the AWS CLI
 - https://aws.amazon.com/cli/
 ### Download Terraform
@@ -51,6 +52,19 @@ You can use the command below to allow terraform access to Amazon APIs
     AWS Secret Access Key [None]:##ExampleAccessKey##
     Default region name [None]: us-ease-1
     Default output format [None]: json
+=======
+### Pre-requisites
+
+- Valid credential for AWS account (not AWS academy account)
+You can use the command below to allow terraform access to Amazon APIs  
+
+```
+aws configure
+```
+
+- Terraform version 0.14.x
+- Network connectivity
+>>>>>>> v3.5
 
 ### Deployment of  2-Tiered web application with Terraform
 
@@ -60,6 +74,7 @@ terraform init
 terraform plan
 terraform apply 
 ```
+<<<<<<< HEAD
 If the 'terraform apply' was successful then you should the ALB as the output
 
 Apply complete! Resources: 36 added, 0 changed, 0 destroyed.
@@ -70,3 +85,5 @@ alb_dns_name = "this-lb-########.us-east-1.elb.amazonaws.com"
 
 ```
 Open your browser with to your ALB URL and confirm you can load the flask app 
+=======
+>>>>>>> v3.5
