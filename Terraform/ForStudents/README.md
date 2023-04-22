@@ -86,12 +86,12 @@ You can use the command below to allow terraform access to Amazon APIs
     Default region name [None]: us-ease-1
     Default output format [None]: json
 
-- Or using the environment variable by modifying **provider.tf**
+- Or using the **above environment variables** by modifying **provider.tf**
     ```
     provider "aws" {
     }
     ```    
-    Note: remove any line of code in **provider.tf** curly brackets
+    Note: remove any lines of code in the curly brackets of **provider.tf**
 
 ### Deployment of  2-Tiered web application with Terraform
 
@@ -110,5 +110,10 @@ Outputs:
 alb_dns_name = "this-lb-########.us-east-1.elb.amazonaws.com"
 
 ```
-Open your browser with to your ALB URL and confirm you can load the flask app 
->>>>>>> v3.7
+
+### Invoke the application
+
+```
+Open your browser with your ALB URL and confirm you can load the flask app 
+
+```
