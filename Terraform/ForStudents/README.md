@@ -1,89 +1,75 @@
-###
+# Terraform AWS Deployment for Competition
 
-# Description
+This Terraform deployment creates resources in your AWS account for the competition. The deployment is intentionally misconfigured for the competition, but it will still work and the Flask application functionality will be available upon deployment completion.
 
-Infrastructure as code solution using Terraform for 2-Tiered web application.
-The deployment uses public AMI with the application code and dependencies already available.
-Database scheme of MySQL database is inhereted from the public snapshot of the DB.
-Application is connecting to the DB hosted on Amazon RDS by using parameters retrieved from the Amazon Parameter Store.
+## Prerequisites
 
-<<<<<<< HEAD
-### Download and Install the AWS CLI
-- https://aws.amazon.com/cli/
-### Download Terraform
-- https://developer.hashicorp.com/terraform/downloads?product_intent=terraform
-### Recommended IDE
-- Cloud9 IDE 
-- Download: https://aws.amazon.com/cloud9/
+Before you get started, make sure you have:
+
+- Installed the AWS CLI. You can install the AWS CLI by following the instructions [here](https://aws.amazon.com/cli/).
+- Configured your AWS region to be `us-east-1` (US East N. Virginia).
+- Installed Terraform v1.3.X or above. You can find the instructions for installing Terraform [here](https://developer.hashicorp.com/terraform/downloads?product_intent=terraform).
+- Configured your AWS credentials. The temporary credentials are provided by AWS as part of your competition-specific AWS account initialization. Follow the instructions below to export these credentials as environment variables. Alternatively, you can store the credentials in the `~/.aws/credentials` file (Mac) or `C:\Users\username\.aws\credentials` file (Windows).
+
 ### How to set environment variables
+
 - Linux or macOS
+
     ```
-    $ export AWS_ACCESS_KEY_ID=##ExampleKeyID##
-    $ export AWS_SECRET_ACCESS_KEY=##ExampleAccessKey##
-    $ export AWS_DEFAULT_REGION=us-east-1
-    $ export AWS_SESSION_TOKEN=##Example_SESSION_TOKEN##
+    export AWS_ACCESS_KEY_ID=##ExampleKeyID##
+    export AWS_SECRET_ACCESS_KEY=##ExampleAccessKey##
+    export AWS_DEFAULT_REGION=us-east-1
+    export AWS_SESSION_TOKEN=##Example_SESSION_TOKEN##
+    ```
+
 - Windows Command Prompt for user current session
+
     ```
     C:\> set AWS_ACCESS_KEY_ID=###ExampleKeyID###
     C:\> set AWS_SECRET_ACCESS_KEY=###ExampleAccessKey##
     C:\> set AWS_DEFAULT_REGION=us-east-1
     C:\> set AWS_SESSION_TOKEN=##Example_SESSION_TOKEN##
+    ```
+
 - Windows PowerShell
+
     ```
     PS C:\> $Env:AWS_ACCESS_KEY_ID="###ExampleKeyID###"
     PS C:\> $Env:AWS_SECRET_ACCESS_KEY="###ExampleAccessKey##"
     PS C:\> $Env:AWS_DEFAULT_REGION="us-east-1"
-    PS C:\> $Env:AWS_SESSION_TOKEN=##Example_SESSION_TOKEN##   
-
-- Note: You should replace the values of **these environment variables**. 
-### Pre-requisites
-
-- Terraform version 1.4.x
-- Network connectivity
-- Valid credential for AWS account (not AWS academy account)
-You can use the command below to allow terraform access to Amazon APIs  
+    PS C:\> $Env:AWS_SESSION_TOKEN=##Example_SESSION_TOKEN##
     ```
-    aws configure
-    ```
-- Configure the credentials file
-    ```
-    $aws configure --profile tf-user
-    AWS Access Key ID [None]: ##ExampleKeyID##
-    AWS Secret Access Key [None]:##ExampleAccessKey##
-    Default region name [None]: us-ease-1
-    Default output format [None]: json
-=======
-### Pre-requisites
 
-- Valid credential for AWS account (not AWS academy account)
-You can use the command below to allow terraform access to Amazon APIs  
+Note: Be sure to replace the values of **these environment variables** with your own.
 
-```
-aws configure
-```
+## Usage
 
-- Terraform version 0.14.x
-- Network connectivity
->>>>>>> v3.5
+To use this deployment, follow these steps:
 
-### Deployment of  2-Tiered web application with Terraform
+1. Change to the Terraform directory: `cd Terraform`.
+2. Initialize the Terraform deployment: `terraform init`.
+3. Validate the Terraform configuration: `terraform validate`.
+4. Preview the Terraform deployment: `terraform plan`.
+5. Apply the Terraform deployment: `terraform apply`.
 
-```
-cd Terraform
-terraform init
-terraform plan
-terraform apply 
-```
-<<<<<<< HEAD
-If the 'terraform apply' was successful then you should the ALB as the output
-
+If the `terraform apply` command was successful, you should see the ALB as the output:
 Apply complete! Resources: 36 added, 0 changed, 0 destroyed.
+
 ```
 Outputs:
 
 alb_dns_name = "this-lb-########.us-east-1.elb.amazonaws.com"
 
 ```
-Open your browser with to your ALB URL and confirm you can load the flask app 
-=======
->>>>>>> v3.5
+
+Open your browser and navigate to your ALB URL to confirm that you can load the Flask app.
+
+## Deployed Architecture
+
+Here's a diagram of the application hosting solution:
+
+![Application hosting solution](../../images/Diagram_v2.png)
+
+## Invoking Application
+
+The Terraform deployment outputs the host URL of the application. Copy this URL and open it in your browser.
