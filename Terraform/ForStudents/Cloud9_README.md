@@ -14,7 +14,7 @@
 <img style="float: center;" src='.\images\image6.jpg' width='600'>
 </p>
 
-* **Note**: You must choose **us-east-1** **N.Virginia** at the top right of the Create environment page
+* **Note**: You must choose **us-east-1** (**N.Virginia**) at the top right of the Create environment page.
 
 
 5. Type in Name, Description, and choose Enviroment type ( Choose **New EC2 instance**)
@@ -66,5 +66,6 @@
 
     alb_dns_name = "this-lb-########.us-east-1.elb.amazonaws.com"
 
+15. Invoke the application    
     ```
     Open your browser with your ALB URL and confirm you can load the flask app 
