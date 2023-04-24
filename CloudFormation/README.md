@@ -5,7 +5,7 @@ Flask application functionality will work irrespective of the template launched.
 
 ## Assumptions
 - You have an access to AWS account
-- AWS region is us-east-1 (US East N.Virginia)
+- AWS region is **us-east-1 (US East N.Virginia)**
 - Latest version of AWS CLI is installed on your machine (not needed if you are using AWS console)
 - You have configured AWS CLI for accessing your AWS account
 
