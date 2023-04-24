@@ -7,7 +7,7 @@ This Terraform deployment creates resources in your AWS account for the competit
 Before you get started, make sure you have:
 
 - Installed the AWS CLI. You can install the AWS CLI by following the instructions [here](https://aws.amazon.com/cli/).
-- Configured your AWS region to be `us-east-1` (US East N. Virginia).
+- Configured your AWS region to be **`us-east-1` (US East N. Virginia)**.
 - Installed Terraform v1.3.X or above. You can find the instructions for installing Terraform [here](https://developer.hashicorp.com/terraform/downloads?product_intent=terraform).
 - Configured your AWS credentials. The temporary credentials are provided by AWS as part of your competition-specific AWS account initialization. Follow the instructions below to export these credentials as environment variables. Alternatively, you can store the credentials in the `~/.aws/credentials` file (Mac) or `C:\Users\username\.aws\credentials` file (Windows).
 
