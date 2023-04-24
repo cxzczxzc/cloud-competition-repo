@@ -2,6 +2,10 @@ from flask import Flask, render_template, json, request, session,redirect
 from pymysql import connections
 from werkzeug.security import generate_password_hash, check_password_hash
 import boto3
+import logging
+
+logging.basicConfig(level=logging.DEBUG, filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+logging.debug('Application log')
 
 
 app = Flask(__name__)
@@ -11,8 +15,13 @@ conn = None
 @app.route('/')
 def main():  
     global conn
-    if(conn is None):     
-       conn = dbconn()    
+    try:
+        if(conn is None):     
+            conn = dbconn()
+            logging.debug('Connection to DB successful') 
+    except Exception as e:
+        logging.error("Exception occurred", exc_info=True)
+        return render_template('error.html', message=str(e))       
     return render_template('index.html') 
 
 
@@ -29,29 +38,39 @@ def showSignin():
 @app.route('/api/validateLogin', methods=['POST'])
 def validateLogin():
     global conn
+    if(conn is None):   
+        logging.error("DB connection failed", exc_info=True)
+        return render_template('error.html', message="DB connection failed")
     try:
         _username = request.form['inputEmail']
         _password = request.form['inputPassword']
         cursor = conn.cursor()
-        #cursor.callproc('sp_validateLogin', (_username,))  
         cursor.execute('SELECT * FROM tbl_user where user_username = %s',(_username,))        
        
         data = cursor.fetchall()
         if len(data) > 0:
             if check_password_hash(str(data[0][3]), _password):
                 session['user'] = data[0][0]
+                logging.debug('User login successful')
                 return redirect('/userhome')
             else:
+                logging.error('User login Error - Wrong email or password')
                 return render_template('error.html', message='Wrong Email address or Password')
         else:
-            return render_template('error.html', message='Wrong Email address or Password')
+            logging.error('User login Error - Wrong username')
+            return render_template('error.html', message='Wrong username')
     except Exception as e:
+        logging.error("Exception occurred", exc_info=True)
         return render_template('error.html', message=str(e))
  
 
 @app.route('/api/signup', methods=['POST','GET'])
 def signUp():
     global conn 
+
+    if(conn is None):   
+        logging.error("DB connection failed", exc_info=True)
+        return render_template('error.html', message="DB connection failed") 
     _name = request.form['inputName']
     _email = request.form['inputEmail']
     _password = request.form['inputPassword']
@@ -66,11 +85,14 @@ def signUp():
             data = cursor.fetchall()
 
             if len(data) == 0:
-                conn.commit()                                 
+                conn.commit() 
+                logging.debug("Signup successful")                                
                 return  render_template('signupsuccess.html', message= 'User sign up successful')
             else:
+                logging.error("Signup failed")       
                 return  render_template('error.html', message= str(data[0])) 
         except Exception as e:
+            logging.error("Exception occurred", exc_info=True)
             return render_template('error.html', message=str(e))
     
     else:
@@ -82,6 +104,7 @@ def userHome():
     if session.get('user'):
         return render_template('userhome.html')
     else:
+        logging.error("Unauthorized access")  
         return render_template('error.html', message='Unauthorized Access')
 
 
@@ -103,6 +126,7 @@ def dbconn():
 
         
     except Exception as e:
+        logging.error("Error getting DB parameters from the parameter store", exc_info=True)
         return render_template('error.html', message=str(e)) 
     params = {
     'user':username, 
